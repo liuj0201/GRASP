@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this research software, please cite this repository. Paper publication metadata will be added when available."
+type: software
+title: "GRASP: Graph-Based Reference-Anchored Pronunciation Assessment and Feedback for Dysarthric Speech"
+authors:
+  - family-names: Liu
+    given-names: Jiayu
+  - family-names: Qi
+    given-names: Jiawen
+  - family-names: Chen
+    given-names: Qinyu
+version: 0.1.0
+date-released: 2026-09-24
+license: MIT
+repository-code: "https://github.com/liuj0201/GRASP"
+url: "https://github.com/liuj0201/GRASP"

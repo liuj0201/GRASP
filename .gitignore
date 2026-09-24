@@ -1,0 +1,55 @@
+# Data, credentials and generated research outputs must stay local.
+data/
+artifacts/
+models/
+external/
+LLM test/
+*.wav
+*.flac
+*.mp3
+*.phn
+*.TextGrid
+*.npz
+*.npy
+*.pt
+*.pth
+*.safetensors
+*.gguf
+*.joblib
+*.pkl
+*.pickle
+*.jsonl
+*.jsonl.gz
+.env
+.env.*
+*API_KEY*
+*api_key*
+*credentials*
+*.pem
+*.key
+configs/*.local.json
+
+# Downloaded optional inference runtime.
+resources/feedback_value_runtime/bin/
+resources/feedback_value_runtime/downloads/
+resources/feedback_value_runtime/models/
+resources/feedback_value_runtime/runtime_manifest.json
+resources/feedback_value_runtime/llama_server_help.txt
+
+# Python/build/editor caches.
+__pycache__/
+*.py[cod]
+*.nbc
+*.nbi
+*.egg-info/
+.pytest*/
+.test_tmp*/
+.codex_tmp/
+.venv/
+venv/
+build/
+dist/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
