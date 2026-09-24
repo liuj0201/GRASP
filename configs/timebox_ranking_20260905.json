@@ -1,0 +1,43 @@
+{
+  "version": "timebox_ranking_20260905",
+  "registered_utc": "2026-09-05T21:38:56.262457+00:00",
+  "deadline_utc": "2026-09-05T22:23:00Z",
+  "selection": "Original training-patient inner LOSO macro AP, independent for each matched ablation; original dev calibration only.",
+  "features": "Reuse registered timebox_compact feature builder. Graph 4 numeric and graph-only phone interactions; auxiliary CF2 and isolated3 have shared slopes. No speaker identifiers as features.",
+  "loss": "Speaker-equal pointwise logistic loss + 0.5 times speaker-equal within-patient positive-negative pairwise logistic loss + ridge penalty. Intercept unpenalized.",
+  "pairs_per_speaker": 512,
+  "seed": 20260905,
+  "candidates": [
+    {
+      "transform": "standard",
+      "ridge": 0.001
+    },
+    {
+      "transform": "standard",
+      "ridge": 0.01
+    },
+    {
+      "transform": "standard",
+      "ridge": 0.1
+    },
+    {
+      "transform": "normal_rank",
+      "ridge": 0.001
+    },
+    {
+      "transform": "normal_rank",
+      "ridge": 0.01
+    },
+    {
+      "transform": "normal_rank",
+      "ridge": 0.1
+    }
+  ],
+  "methods": [
+    "ranking_graph",
+    "ranking_graph_cf",
+    "ranking_graph_iso",
+    "ranking_full"
+  ],
+  "outer_evaluation": "Parent evaluates all registered branches once after all predictions freeze; no tuning after new outer results."
+}

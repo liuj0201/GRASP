@@ -1,0 +1,34 @@
+{
+  "version": "final_v2",
+  "seed": 20260905,
+  "study_type": "retrospective speaker-disjoint development study; historical outer results previously inspected",
+  "cohorts": {
+    "primary5": ["F03", "F04", "M01", "M04", "M05"],
+    "sensitivity7": ["F01", "F03", "F04", "M01", "M02", "M04", "M05"]
+  },
+  "graph_edit_scale": 1.0,
+  "graph_prior": "fixed generic; all OK/SUB/DEL and at most two insertions per gap",
+  "cf_alpha": 50.0,
+  "cf_effective_tokens": 1000.0,
+  "cf_min_phone_tokens": 20,
+  "cf_min_phone_speakers": 2,
+  "training_cf": "leave-one-training-speaker-out priors",
+  "classifier_candidates": [
+    {"family": "logistic", "C": 0.01},
+    {"family": "logistic", "C": 0.1},
+    {"family": "logistic", "C": 1.0},
+    {"family": "logistic", "C": 10.0},
+    {"family": "histogram", "leaves": 4, "iterations": 60},
+    {"family": "histogram", "leaves": 8, "iterations": 60},
+    {"family": "histogram", "leaves": 4, "iterations": 120},
+    {"family": "histogram", "leaves": 8, "iterations": 120}
+  ],
+  "classifier_selection": "development-patient average precision; ties use listed order",
+  "calibration": "Platt fit on development patient only; no test refit",
+  "threshold": "development F1 maximum among 0.01,...,0.99, ties nearest 0.5",
+  "diagnosis": "training-only SUB-versus-DEL logistic C=0.1; train CF is cross-fitted",
+  "primary_metric": "speaker-macro average precision",
+  "external_comparator": "ppaf_rps_raw",
+  "bootstrap_replicates": 10000,
+  "one_pass_policy": "Write all outer predictions before reading test labels for metrics. No changes selected from outer results. Report every registered method and ablation."
+}

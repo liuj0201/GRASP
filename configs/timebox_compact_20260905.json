@@ -1,0 +1,42 @@
+{
+  "version": "timebox_compact_20260905",
+  "registered_before_fitting": true,
+  "registered_utc": "2026-09-05T21:33:44Z",
+  "study_type": "Retrospective timeboxed optimization; historical outer results already known. No claim of independent confirmation.",
+  "excluded_events": ["F04_Session2_0009"],
+  "fixed_evidence": "Unchanged final_v2/fixed_evidence_without_gold.jsonl.gz, filtered by final_v3_prompt_clean exclusion before any split or fit.",
+  "graph": "Original generic joint candidate graph, edit_scale=1, OK/SUB/DEL, max insertions per gap=2. No forced acoustic alignment and no modified acceptable phones.",
+  "outer_folds": "Unchanged dual_graph_v1 primary5 and sensitivity7 training/development/test speaker roles.",
+  "selection": "Each method independently chooses among the same eight candidates by unweighted mean AP over leave-one-training-speaker-out validation splits; exact ties use listed order. Every inner fold recomputes priors and numeric transforms using only inner training speakers. Inner fitting-row priors exclude both the row's speaker and inner validation speaker.",
+  "calibration": "Original nondecreasing Platt and F1 threshold fitted using the original development speaker only after configuration selection; development labels never select candidates.",
+  "diagnosis": "This bounded branch optimizes binary error detection only; candidate_event is unspecified and specific feedback is unauthorized.",
+  "full_method": "compact_full",
+  "matched_ablations": ["compact_graph", "compact_graph_cf", "compact_graph_iso"],
+  "feature_definitions": {
+    "0": "Negative generic graph posterior GOP.",
+    "1": "Negative generic graph Viterbi GOP.",
+    "2": "log(SUB mass / OK mass) in the fixed graph.",
+    "3": "log(DEL mass / OK mass) in the fixed graph.",
+    "4": "CF occurrence shift: log((learned SUB+DEL)/learned OK) - log(0.1/0.9), occurrence alpha=50, effective_tokens=1000, source fallback below20tokens or2speakers.",
+    "5": "CF identity support: log(dot(generic SUB posterior, q_tempered)/dot(generic SUB posterior, q_uniform)); learned q uses alpha10 and original fallback policy, masks blank and text-acceptable phones; q_tempered=r*q_learned+(1-r)*q_uniform, r=n_source_SUB/(n_source_SUB+10)*min(1,n_source_SUB_speakers/2). No SUB posterior mass gives zero support.",
+    "6": "Negative isolated ctc_sf_sd_norm_raw.",
+    "7": "Negative isolated ppaf_rps_raw.",
+    "8": "Negative isolated ppaf_ups_raw.",
+    "compression": "Every numeric cue uses fixed sign(x)*log1p(abs(x)) before fitted transforms.",
+    "phone_design": "39 fixed phone intercept indicators; no phone-by-cue interactions. Numeric cue slopes are shared across phones.",
+    "normal_rank": "Training-only QuantileTransformer, <=256 quantiles, normal distribution, fixed seed20260905. Never refitted on development/test inputs."
+  },
+  "candidates": [
+    {"family": "logistic", "transform": "standard", "C": 0.01},
+    {"family": "logistic", "transform": "standard", "C": 0.1},
+    {"family": "logistic", "transform": "standard", "C": 1.0},
+    {"family": "logistic", "transform": "normal_rank", "C": 0.01},
+    {"family": "logistic", "transform": "normal_rank", "C": 0.1},
+    {"family": "logistic", "transform": "normal_rank", "C": 1.0},
+    {"family": "histogram", "transform": "standard", "leaves": 4},
+    {"family": "histogram", "transform": "standard", "leaves": 8}
+  ],
+  "training": "Equal total weight per fitting speaker; logistic max_iter1200; HGB60iterations,minleaf40,l2=10,learning_rate0.05,no early stopping; fixed seed20260905; CPU threadpool2.",
+  "one_pass": "Write both cohorts and all four methods without joining outer gold. Parent evaluates after all registered branches are frozen. No candidate changes or rerun after outer evaluation.",
+  "time_limit": "User deadline 2026-09-05T22:28:00Z; target prediction freeze by22:05Z."
+}

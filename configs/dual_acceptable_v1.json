@@ -1,0 +1,17 @@
+{
+  "policy_version": "dual-acceptable.v1",
+  "dialect_scope": "North-American English, dictionary-supported segmental pronunciations",
+  "dictionary": "resources/dual_graph/cmudict.dict",
+  "dictionary_source": "https://github.com/cmusphinx/cmudict",
+  "download_date": "2026-09-05",
+  "canonical_rule": "First listed CMUdict pronunciation; per-word frozen local en-us eSpeak only for OOV words",
+  "variant_rule": "Only explicit same-word, same-length, stress-preserving AH0/IH0 alternatives at exactly one position; all accepted variants of a word must differ at that same position",
+  "weak_vowel_pairs": [["AH0", "IH0"]],
+  "homograph_blocklist": ["bass", "bow", "close", "content", "contract", "convert", "convict", "desert", "does", "dove", "entrance", "excuse", "export", "import", "incense", "invalid", "lead", "live", "minute", "object", "permit", "polish", "present", "produce", "progress", "project", "read", "rebel", "record", "refuse", "reject", "resume", "separate", "sow", "subject", "suspect", "tear", "use", "wind", "wound"],
+  "unsupported_variant_policy": "Mark whole word block non-diagnostic; do not insert unsupported paths or label them automatically correct",
+  "stress_projection": "Preserve CMU stress in provenance; strip stress for frozen 39-phone acoustic model",
+  "model_projection": {"AX": "AH", "DX": "T"},
+  "disabled_rules": ["arbitrary_t_deletion", "blanket_vowel_weakening", "cross_word_connected_speech", "AA_AO_merger", "patient_derived_acceptable_variants", "length_changing_normal_variants"],
+  "path_weights": "Uniform across deduplicated local accepted alternatives; their independent cross-word product is normalized",
+  "evaluation": "All-optimal unit edit alignment; stable binary-error and exact-event masks are distinct; ambiguous blocks are excluded from diagnosis"
+}

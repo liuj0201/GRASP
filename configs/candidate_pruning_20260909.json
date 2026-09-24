@@ -1,0 +1,41 @@
+{
+  "version": "candidate_pruning_20260909",
+  "study_type": "Retrospective speaker-disjoint exploratory comparison; historical outer outcomes were previously inspected. All new graph policies fixed before new outer metrics.",
+  "seed": 20260905,
+  "cohorts": {
+    "primary5": ["F03", "F04", "M01", "M04", "M05"],
+    "sensitivity7": ["F01", "F03", "F04", "M01", "M02", "M04", "M05"]
+  },
+  "strategies": [
+    {"name": "full_graph_da", "candidate_policy": "All 39 phones; cached fixed generic graph evidence."},
+    {"name": "acoustic_top1_da", "policy": "frame_topk", "top_k": 1, "threshold": 0.01},
+    {"name": "acoustic_top2_da", "policy": "frame_topk", "top_k": 2, "threshold": 0.01},
+    {"name": "learned_top1_da", "policy": "frame_topk", "top_k": 1, "threshold": 0.01, "training_neighbors": true}
+  ],
+  "training_neighbor_budget": 4,
+  "training_neighbor_source": "Only stable, diagnostic observed directed substitutions in outer training patients; leave-own-patient-out for training features; min raw count 1; no added unseen edges.",
+  "selection": "Union per-frame top-k nonblank phones with raw posterior >=0.01. Add observed training neighbors for SUB only. No boundaries, PHN or complete-graph pass used by acoustic selector.",
+  "pruning_semantics": "Retain all acceptable OK paths and epsilon DEL. Prune SUB and INS before inference, preserve original arc weights without renormalization. CTC blank remains a distinct frame symbol.",
+  "graph_parameters": {"operation_probabilities": [0.9, 0.07, 0.03], "insertion_probability": 0.02, "max_insertions": 2, "edit_scale": 1.0},
+  "features": ["negative sum-posterior GOP", "negative max-marginal GOP", "log SUB/OK", "log DEL/OK"],
+  "adaptation": "Original Graph+DA feature transform, model family, patient weighting, development selection and calibration; historical CF reweighting is absent.",
+  "classifier_candidates": [
+    {"family": "logistic", "C": 0.01},
+    {"family": "logistic", "C": 0.1},
+    {"family": "logistic", "C": 1.0},
+    {"family": "logistic", "C": 10.0},
+    {"family": "histogram", "leaves": 4, "iterations": 60},
+    {"family": "histogram", "leaves": 8, "iterations": 60},
+    {"family": "histogram", "leaves": 4, "iterations": 120},
+    {"family": "histogram", "leaves": 8, "iterations": 120}
+  ],
+  "classifier_selection": "Development-patient average precision; ties use listed order.",
+  "calibration": "Nondecreasing Platt fit and F1 threshold on development patient only.",
+  "primary_metric": "speaker-macro average precision",
+  "bootstrap_replicates": 10000,
+  "excluded_events": ["F04_Session2_0009"],
+  "one_pass_policy": "Freeze all outer predictions before evaluation joins test labels. Report all four policies. Do not refit or select graph policies from new test results.",
+  "resource_policy": "Separate warmed single-process CPU pilot includes selection, graph construction and sum/max inference, with legacy-full and full-compacted controls; cached-logit loading and the unchanged encoder are excluded. Parallel experiment timings are not resource claims.",
+  "memory_policy": "Report named graph and DP arrays only; no claim that these equal process peak memory.",
+  "literature_policy": "TORGO speaker-specific published substitutions motivate data-derived graph restriction but are not hard-coded, because published source speakers overlap evaluation patients. PP-AF generic phonology and Mandarin PhoenixDSR confusions are not relabeled as an English dysarthria confusion table."
+}

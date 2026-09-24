@@ -1,0 +1,28 @@
+{
+  "version": "timebox_ensemble_20260905",
+  "registered_before_fitting": true,
+  "study_type": "Retrospective fixed ensemble hypothesis before the one-pass outer evaluation. Historical outer results were previously known; no independent-confirmation claim.",
+  "excluded_events": ["F04_Session2_0009"],
+  "source_feature_protocol": "configs/timebox_compact_20260905.json",
+  "fixed_feature_construction": "Exactly the frozen compact branch's nine cues, conditional CF alpha10, occurrence alpha50, substitution-count and speaker-diversity reliability, original graph and acceptable-phone sets.",
+  "outer_folds": "Unchanged original train/development/test roles, both primary5 and sensitivity7.",
+  "training": "Fit all eight previously registered compact candidate classifiers on original training speakers only. Fitting-row CF priors leave out their own speaker; development and test CF priors use original training speakers only. Numeric transforms fit only training observations. Equal total speaker weights. Two CPU threads.",
+  "candidate_members": [
+    {"family": "logistic", "transform": "standard", "C": 0.01},
+    {"family": "logistic", "transform": "standard", "C": 0.1},
+    {"family": "logistic", "transform": "standard", "C": 1.0},
+    {"family": "logistic", "transform": "normal_rank", "C": 0.01},
+    {"family": "logistic", "transform": "normal_rank", "C": 0.1},
+    {"family": "logistic", "transform": "normal_rank", "C": 1.0},
+    {"family": "histogram", "transform": "standard", "leaves": 4},
+    {"family": "histogram", "transform": "standard", "leaves": 8}
+  ],
+  "fixed_ensemble_rule": "Apply sigmoid to each component decision score. Average the six logistic probabilities; average the two histogram probabilities; mix these family averages with fixed weights0.5 and0.5. Raw error score is logit of this mixture clipped to[1e-12,1-1e-12] only for numeric finiteness. Component weights are1/12 for each logistic and1/4 for each histogram. Retain all eight members; no model selection or weighting optimization.",
+  "model_selection": "None. Inner validation is not used because the ensemble rule and all member settings are fixed before fitting.",
+  "calibration": "After fitting the fixed ensemble, fit the original nondecreasing Platt calibration and F1 threshold using the original development speaker only. Calibration cannot alter the raw-score ranking used by AP.",
+  "full_method": "ensemble_full",
+  "matched_ablations": ["ensemble_graph", "ensemble_graph_cf", "ensemble_graph_iso"],
+  "diagnosis": "Binary detection only. Candidate event unspecified and specific feedback unauthorized.",
+  "freeze_rule": "Write every method for both cohorts before parent reads outer labels. No outer result is used to select component models, ensemble weights, hyperparameters or subsequent candidate changes.",
+  "time_limit": "Finish predictions by2026-09-05T22:00:00Z; user hard stop22:28Z."
+}

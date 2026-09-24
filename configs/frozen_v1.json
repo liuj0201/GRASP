@@ -1,0 +1,186 @@
+{
+  "schema_version": "da-cf-gop.config.v1",
+  "seed": 20260829,
+  "paths": {
+    "data_root": "data/torgo",
+    "checkpoint": "models/ctc_sf/checkpoint-8000",
+    "processor": "models/ctc_sf/processor_config_gop",
+    "legacy_code_root": "external/legacy_code",
+    "artifacts": "artifacts"
+  },
+  "cohorts": {
+    "primary5": [
+      "F03",
+      "F04",
+      "M01",
+      "M04",
+      "M05"
+    ],
+    "sensitivity7": [
+      "F01",
+      "F03",
+      "F04",
+      "M01",
+      "M02",
+      "M04",
+      "M05"
+    ],
+    "healthy_phn": [
+      "MC01",
+      "MC02",
+      "MC03",
+      "MC04"
+    ]
+  },
+  "audio_policy": {
+    "microphone": "headMic",
+    "phn_sequence_preference": [
+      "headMic",
+      "arrayMic"
+    ],
+    "allow_cross_mic_phn_sequence_for": [
+      "F01",
+      "M02"
+    ],
+    "use_phn_boundaries": false,
+    "event_key": [
+      "speaker_id",
+      "session",
+      "stem"
+    ]
+  },
+  "labels": {
+    "stable_alignment_min_fraction": 0.8,
+    "model_projection": {
+      "AX": "AH",
+      "DX": "T"
+    },
+    "include_insertions_in_headline": false
+  },
+  "backend": {
+    "blank_id": 0,
+    "vocab_size": 40,
+    "sample_rate": 16000,
+    "batch_size": 256,
+    "device": "auto"
+  },
+  "recalibration": {
+    "steps": 100,
+    "learning_rate": 0.02,
+    "identity_l2": 1.0,
+    "max_utterances": 500,
+    "batch_size": 32,
+    "entropy_max_absolute_increase": 0.25,
+    "entropy_max_ratio": 4.0
+  },
+  "prior": {
+    "uniform_backoff": 0.05,
+    "dirichlet_pseudocount": 20.0,
+    "enrichment_cap": 4.0,
+    "deletion_base_weight": 0.5,
+    "lambda_grid": [
+      0.0,
+      0.25,
+      0.5,
+      1.0
+    ]
+  },
+  "deletion": {
+    "quantile": 0.9,
+    "min_tokens_per_phone": 20,
+    "min_speakers_per_phone": 2
+  },
+  "calibration": {
+    "platt_c": 1.0,
+    "alternative_temperature_grid": [
+      0.5,
+      0.75,
+      1.0,
+      1.5,
+      2.0
+    ]
+  },
+  "llm_export": {
+    "schema_version": "da-cf-gop.llm.v1",
+    "precision_floor": 0.8,
+    "coverage_floor": 0.1,
+    "alternative_margin_floor": 0.1,
+    "threshold_grid": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "hmac_env": "DA_CF_RELEASE_KEY",
+    "error_threshold": 0.5,
+    "patient_facing": false
+  },
+  "methods": [
+    "conventional_forced_alignment_gop",
+    "ctc_sf_sd_norm",
+    "ctc_sf_sd_norm_sequence_recalibrated",
+    "all_phone_cf_uniform_raw",
+    "all_phone_cf_calibrated",
+    "code9_legacy_hard_graph",
+    "da_cf_fixed_no_phn",
+    "da_cf_adapted"
+  ],
+  "ablations": [
+    "da_cf_adapted_fixed_prior",
+    "da_cf_adapted_uniform_prior",
+    "da_cf_adapted_hard_pruning",
+    "da_cf_adapted_no_topology_correction",
+    "da_cf_adapted_no_sequence_recalibration",
+    "da_cf_adapted_no_deletion_calibration",
+    "da_cf_adapted_no_deletion",
+    "da_cf_adapted_no_abstention"
+  ],
+  "evaluation": {
+    "bootstrap_replicates": 10000,
+    "binary_error_threshold": 0.5,
+    "primary_metric": "macro_speaker_auprc",
+    "primary_comparator": "all_phone_cf_calibrated",
+    "required_absolute_improvement": 0.03,
+    "required_primary_speakers_improved": 4,
+    "required_sensitivity_speakers_improved": 5,
+    "maximum_auroc_drop": 0.01,
+    "maximum_brier_increase": 0.01,
+    "maximum_identification_drop": 0.01,
+    "strict_significance_alpha": 0.05
+  },
+  "severity": {
+    "dysarthric_speakers": [
+      "F01",
+      "F03",
+      "F04",
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05"
+    ],
+    "audited_recordings": 415,
+    "unique_reading_events": 329,
+    "event_key": [
+      "speaker_id",
+      "session",
+      "stem"
+    ],
+    "recording_policy": "score all audited recordings, average within reading event, then average within speaker",
+    "audited_manifest": "external/legacy_code/code9/manifests/torgo_mixgop_release.jsonl",
+    "audited_logits_cache": "external/legacy_code/code9/cache/ctc_sf_official",
+    "frozen_scores": {
+      "mixgop": "external/legacy_code/code9/results/raw_scores/mixgop/xlsr19.jsonl",
+      "uq_gop": "external/legacy_code/code9/results/raw_scores/uq_gop/utterance_scores.jsonl",
+      "cagop": "external/legacy_code/code9/results/raw_scores/cagop/utterance_scores.jsonl",
+      "ctc_sf": "external/legacy_code/code9/results/raw_scores/ctc_sf/utterance_scores.jsonl"
+    },
+    "system_level_comparison_only": true
+  }
+}
