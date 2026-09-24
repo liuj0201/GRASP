@@ -4,8 +4,13 @@ Run commands from the repository root with Python 3.10 and an editable installat
 
 ## External inputs
 
+See [README_MODELS.md](../README_MODELS.md) for pinned model download links,
+inference-file destinations, the distinction between upstream weights and our
+trained detectors, and the separate model formats used by the web prototype and
+paper language study.
+
 1. Obtain TORGO audio, prompts, PHN transcriptions, and speaker Notes through the corpus provider. Preserve its speaker/session structure. `data.py` expects speaker directories under the corpus's speaker-set directories, with `Session*/wav_headMic`, `prompts`, and `phn_headMic` or `phn_arrayMic`. The source filenames and prompt contents determine event identities and reference phones.
-2. Obtain the released GOP-SF / CTC-SF acoustic checkpoint and matching processor from the [upstream CTC-based-GOP repository](https://github.com/frank613/CTC-based-GOP): XLSR-53 fine-tuned on LibriSpeech train-clean-100, with the 40-symbol blank/ARPABET inventory. The historical checkpoint folder was named `is24/models/checkpoint-8000`, and the matching processor folder `is24/models/processor_config_gop`. A generic wav2vec 2.0 checkpoint is not an equivalent replacement. The repository does not supply these weights or a newly verified model-download workflow.
+2. Obtain the released GOP-SF / CTC-SF acoustic checkpoint and matching processor from the [upstream CTC-based-GOP repository](https://github.com/frank613/CTC-based-GOP): XLSR-53 fine-tuned on LibriSpeech train-clean-100, with the 40-symbol blank/ARPABET inventory. The historical checkpoint folder was named `is24/models/checkpoint-8000`, and the matching processor folder `is24/models/processor_config_gop`. A generic wav2vec 2.0 checkpoint is not an equivalent replacement. The weights are not bundled. README_MODELS.md provides checked download endpoints and a checksum; a fresh full-weight download and model-loading test were not rerun for that documentation update.
 3. Retain the bundled, frozen `resources/dual_graph/cmudict.dict` and its license. OOV phonemization uses `phonemizer` with the pinned `espeakng-loader` library/data, not an arbitrary system dictionary.
 
 For the separate language study, obtain Qwen2.5-1.5B-Instruct in Q4_K_M GGUF form and a compatible llama.cpp CPU server. See the language section below.
