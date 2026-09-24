@@ -1,4 +1,9 @@
-# Public source release 0.1.0
+# Public source release 0.1.1
+
+Version 0.1.1 normalizes four files from CRLF to LF so a fresh clone has a
+clean Git status under the repository's `.gitattributes`. It updates the
+software version metadata without changing scientific parameters or behavior.
+The 0.1.0 source release and its validation are described below.
 
 Prepared on 2026-09-24 for the GRASP manuscript. The release uses the existing
 `da_cf_gop` Python package name to preserve imports.
