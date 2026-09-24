@@ -20,6 +20,18 @@ This release identifies the paper method as **`candidate_pruning_20260909` / `le
 
 Raw TORGO recordings, PHN transcriptions, participant-level predictions, fitted patient models, acoustic checkpoints, and LLM binaries are not bundled. Reproducing the corpus experiments requires obtaining the external data and acoustic model and generating the local intermediate artifacts described below.
 
+## Model downloads and local web deployment
+
+**Some missing assets are trained by this project; downloading third-party models alone does not enable speech assessment.** See [Model downloads, trained artifacts, and local web setup](README_MODELS.md) for exact sources, pinned versions, destination folders, and commands.
+
+| Component | Origin | How to obtain it |
+| --- | --- | --- |
+| CTC-SF phoneme acoustic model and processor | Upstream wav2vec 2.0 model fine-tuned by the CTC-based-GOP authors; frozen in our paper pipeline | Download the matching [upstream checkpoint and processor](README_MODELS.md#1-acoustic-model-upstream-weights) |
+| Error detector, fitted feature scaler, calibration, threshold, and training substitution tables | Trained or estimated by this project on the designated training/development folds | No public weight download is currently provided; [regenerate them with the released training code](README_MODELS.md#2-models-and-parameters-trained-by-this-project) |
+| Qwen2.5-1.5B-Instruct | External Qwen model; no GRASP fine-tuning | Use [Transformers weights for the older web prototype](README_MODELS.md#3-optional-qwen-for-the-web-prototype-transformers), or [GGUF for the separate paper language study](README_MODELS.md#4-qwen-for-the-paper-language-study-gguf) |
+
+The existing web prototype can serve its page after installation, but a clean clone cannot score audio until its trained artifacts and acoustic model are supplied. It uses the older `final_v3_prompt_clean` scorer, not the paper's `learned_top1_da` sparse scorer. The two model formats are not interchangeable. Qwen is optional for the web prototype's default template feedback.
+
 ## Installation and checks
 
 Use Python 3.10 and an editable installation from this directory:
