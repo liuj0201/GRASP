@@ -9,7 +9,7 @@ authors:
     given-names: Jiawen
   - family-names: Chen
     given-names: Qinyu
-version: 0.1.0
+version: 0.1.1
 date-released: 2026-09-24
 license: MIT
 repository-code: "https://github.com/liuj0201/GRASP"
