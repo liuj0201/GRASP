@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DA-CF-GOP · Homework practice</title>
+<style>
+  /* Visual shell adapted from phoneme_project/code/code1/webapp/static/index.html. */
+  :root { color-scheme: light; --bg:#fff; --text:#1f2328; --muted:#6b7280; --line:#d0d7de; --soft:#f6f8fa; --panel:#fff; --border-soft:#eaeef2; --blue:#2563eb; --red:#dc2626; --accent:#7c3aed; --accent-soft:#f5f3ff; --review:#fffbeb; --review-border:#d97706; }
+  [data-theme="dark"] { color-scheme:dark; --bg:#0d1117; --text:#e6edf3; --muted:#9aa4b2; --line:#30363d; --soft:#161b22; --panel:#1c2330; --border-soft:#30363d; --blue:#4f8cff; --red:#f85149; --accent:#a78bfa; --accent-soft:#221b35; --review:#342d18; --review-border:#d6a335; }
+  * { box-sizing:border-box; }
+  body { font-family:system-ui,-apple-system,"Segoe UI",sans-serif; max-width:980px; margin:2rem auto; padding:0 1rem 3rem; color:var(--text); background:var(--bg); }
+  h1 { font-size:1.45rem; margin:0 0 .3rem; } h2 { font-size:1.05rem; margin:0 0 .65rem; }
+  .sub,.notice { color:var(--muted); line-height:1.55; font-size:.9rem; } .sub { margin:0; max-width:700px; }
+  .topbar { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
+  .tag { color:var(--accent); font-size:.78rem; font-weight:650; letter-spacing:.04em; margin:0 0 .55rem; }
+  .panel { border:1px solid var(--line); border-radius:9px; padding:1rem; margin-top:1.25rem; background:var(--panel); }
+  label { display:block; font-weight:650; margin:.65rem 0 .35rem; font-size:.92rem; }
+  textarea { width:100%; min-height:84px; font:inherit; padding:.6rem .7rem; border:1px solid var(--line); border-radius:6px; resize:vertical; background:var(--bg); color:var(--text); }
+  button,select { font:inherit; font-size:.92rem; padding:.5rem .8rem; border:1px solid var(--line); background:var(--soft); color:var(--text); border-radius:6px; }
+  button { cursor:pointer; } button.primary { background:var(--blue); border-color:var(--blue); color:white; } button.recording { background:var(--red); border-color:var(--red); color:white; }
+  button:disabled,select:disabled { opacity:.5; cursor:not-allowed; } textarea:disabled { background:var(--soft); }
+  .icon-btn { flex-shrink:0; font-size:.85rem; } .controls { display:flex; flex-wrap:wrap; gap:.65rem; align-items:center; margin-top:.85rem; }
+  input[type="file"] { max-width:100%; font-size:.88rem; } .or { font-size:.85rem; color:var(--muted); }
+  .audio-preview { margin-top:.8rem; padding:.65rem .75rem; background:var(--soft); border:1px solid var(--border-soft); border-radius:6px; }
+  audio { display:block; width:100%; margin-top:.4rem; } .file-name { color:var(--muted); font-size:.85rem; overflow-wrap:anywhere; }
+  .status { color:var(--muted); font-size:.88rem; margin-top:.9rem; } .error { color:var(--red); font-size:.9rem; margin-top:.65rem; }
+  .word-list { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1rem; } .word-card { border:1px solid var(--line); background:var(--soft); border-radius:7px; padding:.65rem .8rem; min-width:130px; }
+  .word-card.review { border-color:var(--review-border); background:var(--review); } .word-card.unassessed { border-style:dashed; }
+  .word-title { font-weight:650; } .word-state { font-size:.74rem; color:var(--muted); display:block; margin-top:.15rem; }
+  .phone-row { display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.6rem; } .phone { display:inline-block; padding:.2rem .45rem; border:1px solid var(--line); border-radius:5px; font-family:"Charis SIL","Doulos SIL","Segoe UI",sans-serif; background:var(--panel); }
+  .phone.review { border-color:var(--review-border); outline:1px solid var(--review-border); } .phone.unassessed { border-style:dashed; opacity:.65; }
+  .legend { font-size:.82rem; color:var(--muted); line-height:1.5; margin:.8rem 0 0; } .summary { margin:.2rem 0; line-height:1.5; }
+  .advice { white-space:pre-wrap; line-height:1.65; padding:.8rem .9rem; background:var(--accent-soft); border-left:3px solid var(--accent); border-radius:5px; margin:.8rem 0; }
+  details { margin-top:1rem; } summary { cursor:pointer; font-size:.85rem; color:var(--muted); } pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:.77rem; padding:.8rem; border:1px solid var(--line); border-radius:6px; background:var(--soft); }
+  [hidden] { display:none !important; } .feedback-select label { margin:0 0 .3rem; font-size:.8rem; color:var(--muted); } .spacer { flex:1; }
+  @media(max-width:580px) { body { margin:1.2rem auto; } .panel { padding:.85rem; } .controls { align-items:stretch; } .spacer { display:none; } .feedback-select { width:100%; } .topbar { gap:.6rem; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div><p class="tag">DA-CF-GOP · RESEARCH PROTOTYPE</p><h1>Homework practice</h1><p class="sub">Read your assigned English text, listen to your recording, and review the sounds the system flags for another listen.</p></div>
+  <button id="theme" class="icon-btn" type="button" aria-label="Switch colour theme">Dark theme</button>
+</header>
+<main>
+  <section class="panel" aria-labelledby="practice-heading">
+    <h2 id="practice-heading">1. Prepare your practice</h2>
+    <label for="reference">Assigned text</label>
+    <textarea id="reference" maxlength="500" placeholder="Enter the word or short sentence you were asked to read." spellcheck="false"></textarea>
+    <p class="notice">Use one word or a short sentence. The assessment follows this text.</p>
+    <div class="controls">
+      <button id="record" class="primary" type="button">Start recording</button>
+      <span class="or">or</span>
+      <label for="audio-file" class="or">Upload audio</label>
+      <input id="audio-file" type="file" accept="audio/wav,audio/flac,audio/ogg,.wav,.flac,.ogg">
+    </div>
+    <p class="notice">Record up to 20 seconds, or upload WAV, FLAC or OGG audio.</p>
+    <div id="preview" class="audio-preview" hidden><span id="filename" class="file-name"></span><audio id="player" controls preload="metadata"></audio></div>
+    <div class="controls">
+      <button id="assess" class="primary" type="button" disabled>Review recording</button>
+      <span class="spacer"></span>
+      <div class="feedback-select"><label for="feedback-mode">Feedback selection</label><select id="feedback-mode"><option value="template">Standard</option><option value="qwen">Local language model (optional)</option></select></div>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite">Enter your assigned text and record or upload audio.</p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+  <section id="results" class="panel" aria-labelledby="results-heading" hidden>
+    <h2 id="results-heading">2. Listen and review</h2>
+    <p id="result-summary" class="summary"></p>
+    <div id="words" class="word-list"></div>
+    <p class="legend">Outlined sounds: worth another listen. Plain sounds: no flag from the system. Dashed sounds: not assessed. These labels are uncertain suggestions; an unflagged sound is not a confirmation of correct pronunciation.</p>
+    <div id="feedback" class="advice"></div>
+    <p id="feedback-note" class="notice" hidden></p>
+    <div class="controls"><button id="replay" type="button">Replay full recording</button><button id="retry" type="button">Record another attempt</button></div>
+    <details><summary>Assessment details</summary><pre id="details"></pre></details>
+  </section>
+</main>
+<script src="/static/homework.js" defer></script>
+</body>
+</html>
